@@ -24,8 +24,10 @@ t_cmd	*pipex_lstnew(char *content)
 	tmp = (t_cmd *) malloc(sizeof(t_cmd));
 	if (tmp == NULL)
 		return (NULL);
+	tmp->program_name = NULL;
 	tmp->cmd_str = content;
 	tmp->cmd_split = NULL;
+	tmp->cmd_path = NULL;
 	tmp->next = NULL;
 	return (tmp);
 }

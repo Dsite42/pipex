@@ -29,6 +29,7 @@ char	*get_path_cmd(t_cmd *cmd_list)
 	int		pipefd[2];
 	char	**path_argv;
 	char 	*new_line;
+	int		fd_dup;
 
 	path_argv = create_execve_argv(cmd_list);
 	//printf("path_argv1:%s\n", ft_strjoin_sn(10, path_argv, " "));
@@ -38,7 +39,7 @@ char	*get_path_cmd(t_cmd *cmd_list)
 		perror("fork error");
 	else if (fork_return == 0)
 	{
-		dup2 (pipefd[1], STDOUT_FILENO);
+		fd_dup = dup2 (pipefd[1], STDOUT_FILENO);
 		close(pipefd[0]);
 		close(pipefd[1]);
 		execve("/usr/bin/which", (char * const *)path_argv, NULL); // wenn befehl nicht existent, dann hängt er hier
@@ -46,11 +47,15 @@ char	*get_path_cmd(t_cmd *cmd_list)
 	else
 	{
 		wait(NULL);
+		//close(fd_dup);
 		free(path_argv);
 		new_line = get_next_line(pipefd[0]);
+		close(pipefd[0]);
+		close(pipefd[1]);
 		new_line[ft_strlen(new_line) - 1] = '\0';
 		return (new_line);
 	}
+	return (NULL);
 }
 
 
@@ -61,6 +66,7 @@ t_cmd	*init_cmds(int argc, char **argv)
 	t_cmd	*new_node;
 
 	i = 2;
+	cmd_list = NULL;
 	while(i <= argc - 2) // Noch ändern da 2 dateinamen in den argumenten
 	{
 		new_node = pipex_lstnew(*(argv + i));
@@ -75,51 +81,50 @@ t_cmd	*init_cmds(int argc, char **argv)
 	return (cmd_list);
 }
 
-
-
-int	main(int argc, char **argv)
+void	run_cmds(int argc, char **argv, t_cmd *cmd_list)
 {
 	int		pipefd[2];
 	int		fd_in;
 	int		fd_out;
-	char buf[10001];
+	int		fd_dup[]={0,0};
 	char	*path_cmd;
-	t_cmd	*cmd_list;
 
-	cmd_list = init_cmds(argc, argv);
-	//printf("ERROR:%s | %s\n", cmd_list->cmd_str, cmd_list->next->cmd_split[0]);
-	//exit(0);
 	path_cmd = cmd_list->cmd_path;
-	
-//execve("/usr/bin/grep", argv, NULL);
-//exit(0);
 	pipe(pipefd);
 	if (fork() == 0)
 	{
-		dup2 (pipefd[1], STDOUT_FILENO);
+		fd_dup[0] = dup2 (pipefd[1], STDOUT_FILENO);
 		close(pipefd[0]);
 		close(pipefd[1]);
 		fd_in = open(argv[1], O_RDONLY);
-		dup2 (fd_in, STDIN_FILENO);
+		fd_dup[1] = dup2 (fd_in, STDIN_FILENO);
 		close(fd_in);
 		execve((const char *) path_cmd, cmd_list->cmd_split, NULL);
 	}
 	else
 	{
 		wait(NULL);
+		//close(fd_dup[0]);
+		//close(fd_dup[1]);
 		free(path_cmd);
-		dup2 (pipefd[0], STDIN_FILENO);
+		fd_dup[0] = dup2 (pipefd[0], STDIN_FILENO);
 		close(pipefd[0]);
 		close(pipefd[1]);
 		fd_out = open(argv[argc - 1], O_CREAT | O_RDWR, 0644 );
-		dup2 (fd_out, STDOUT_FILENO);
+		fd_dup[1] = dup2 (fd_out, STDOUT_FILENO);
 		close(fd_out);
 		execve((const char *) cmd_list->next->cmd_path, cmd_list->next->cmd_split, NULL);
-
-//execlp("wc", "wc", "-w", NULL);
-		//execve("/usr/bin/grep", argv, NULL);
-		//read(0, buf, 10000);
-		//buf[10000] = '\0';
-		//printf("Hallo:%s\n", buf);
 	}
+}	
+
+int	main(int argc, char **argv)
+{
+	t_cmd	*cmd_list;
+
+	cmd_list = init_cmds(argc, argv);
+	run_cmds(argc, argv, cmd_list);
+	//pipex_lstclear(cmd_list);
+	//printf("ERROR:%s | %s\n", cmd_list->cmd_str, cmd_list->next->cmd_split[0]);
+	//exit(0);
+	return (0);
 }

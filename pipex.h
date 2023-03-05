@@ -30,5 +30,6 @@ void	fto_free_arr(void ** arr);
 t_cmd	*pipex_lstnew(char *content);
 t_cmd	*pipex_lstlast(t_cmd *lst);
 void	pipex_lstadd_back(t_cmd **lst, t_cmd *new);
+void	pipex_lstclear(t_cmd *lst);
 
 #endif

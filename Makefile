@@ -12,7 +12,7 @@
 
 
 CC = cc
-#CC_FLAGS = -Wall -Wextra -Werror
+CC_FLAGS = -g #-Wall -Wextra -Werror
 OBJDIR = obj
 INFILES = 	*.c\
 			get_next_line/get_next_line_bonus.c\
