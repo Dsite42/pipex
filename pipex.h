@@ -10,11 +10,12 @@
 # include <fcntl.h>
 # include <string.h>
 # include "get_next_line/get_next_line_bonus.h"
-
+#include <errno.h>
 
 typedef struct s_cmd_list
 {
 	char	*program_name;
+	char	**path_split;
  	char	*cmd_str;
 	char	**cmd_split;
 	char	*cmd_path;

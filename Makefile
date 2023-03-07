@@ -12,7 +12,7 @@
 
 
 CC = cc
-CC_FLAGS = -g #-Wall -Wextra -Werror
+#CC_FLAGS = -g -Wall -Wextra -Werror
 OBJDIR = obj
 INFILES = 	*.c\
 			get_next_line/get_next_line_bonus.c\
@@ -55,8 +55,8 @@ fclean: clean
 	rm -f $(NAME_BONUS)
 	cd libft && $(MAKE) fclean
 	
-bonus: all $(BONUSOBJFILES)
-	$(CC) $(CC_FLAGS) $(BONUSOBJFILES) -o $(NAME_BONUS)  libft/libft.a
+#bonus: all $(BONUSOBJFILES)
+#	$(CC) $(CC_FLAGS) $(BONUSOBJFILES) -o $(NAME_BONUS)  libft/libft.a
 
 re: fclean all
 

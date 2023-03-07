@@ -23,43 +23,60 @@ char	**create_execve_argv(t_cmd *cmd_list)
 	return (needed_argvs);
 }
 
-char	*get_path_cmd(t_cmd *cmd_list)
+void	pipex_error(char *message, int isperror, int exit_code)
 {
-	int		fork_return;
-	int		pipefd[2];
-	char	**path_argv;
-	char 	*new_line;
-	int		fd_dup;
-
-	path_argv = create_execve_argv(cmd_list);
-	//printf("path_argv1:%s\n", ft_strjoin_sn(10, path_argv, " "));
-	pipe(pipefd);
-	fork_return = fork();
-	if (fork_return == -1)
-		perror("fork error");
-	else if (fork_return == 0)
+	if (isperror == 1)
 	{
-		fd_dup = dup2 (pipefd[1], STDOUT_FILENO);
-		close(pipefd[0]);
-		close(pipefd[1]);
-		execve("/usr/bin/which", (char * const *)path_argv, NULL); // wenn befehl nicht existent, dann hängt er hier
+		//printf("Error code:%i ", errno);
+		perror(message);
 	}
 	else
-	{
-		wait(NULL);
-		//close(fd_dup);
-		free(path_argv);
-		new_line = get_next_line(pipefd[0]);
-		close(pipefd[0]);
-		close(pipefd[1]);
-		new_line[ft_strlen(new_line) - 1] = '\0';
-		return (new_line);
-	}
-	return (NULL);
+		printf("%s\n", message);  // get next line und printf in ftlib integrieren
+	exit(exit_code);
 }
 
+void	split_path(t_cmd *cmd_list, char **envp)
+{
+	while (*envp != NULL)
+	{
+		if (ft_strncmp(*envp, "PATH=", 5) == 0)
+		{
+			cmd_list->path_split = ft_split(*envp, ':');
+			break ;
+		}
+		envp = envp + 1;
+	}
+}
 
-t_cmd	*init_cmds(int argc, char **argv)
+char	*get_path_cmd(t_cmd *cmd_list, char **envp)
+{
+	char	*path_cmd;
+	int		i;
+	char	*to_join[2];
+
+	i = 0;
+	path_cmd = NULL;
+	to_join[1] = (cmd_list->cmd_split)[0];
+	split_path(cmd_list, envp);
+	while ((cmd_list->path_split)[i] != NULL)
+	{
+		to_join[0] = (cmd_list->path_split)[i];
+		path_cmd = ft_strjoin_sn(2, to_join, "/");
+		if (access(path_cmd, F_OK) == 0)
+			break ;
+		else
+		{
+			free(path_cmd);
+			path_cmd = NULL;
+		}
+		i++;
+	}
+	//if (path_cmd == NULL)
+	//	pipex_error("Command not found", 1, errno);
+	return (path_cmd);
+}
+
+t_cmd	*init_cmds(int argc, char **argv, char **envp)
 {
 	int		i;
 	t_cmd	*cmd_list;
@@ -67,12 +84,15 @@ t_cmd	*init_cmds(int argc, char **argv)
 
 	i = 2;
 	cmd_list = NULL;
+
+	if (argc < 5)
+		pipex_error("Not enough input arguments", 0, 5);
 	while(i <= argc - 2) // Noch ändern da 2 dateinamen in den argumenten
 	{
 		new_node = pipex_lstnew(*(argv + i));
 		new_node->program_name = ft_strdup(*argv);
 		new_node->cmd_split = ft_split(new_node->cmd_str, ' ');
-		new_node->cmd_path = get_path_cmd(new_node);
+		new_node->cmd_path = get_path_cmd(new_node, envp);
 
 		//printf("fuck:%s\n", new_node->cmd_path);
 		pipex_lstadd_back(&cmd_list, new_node);
@@ -81,17 +101,20 @@ t_cmd	*init_cmds(int argc, char **argv)
 	return (cmd_list);
 }
 
-void	run_cmds(int argc, char **argv, t_cmd *cmd_list)
+void	run_cmds(int argc, char **argv, char **envp, t_cmd *cmd_list)
 {
 	int		pipefd[2];
 	int		fd_in;
 	int		fd_out;
 	int		fd_dup[]={0,0};
 	char	*path_cmd;
+	pid_t	pid;
+	int		stat_loc;
 
 	path_cmd = cmd_list->cmd_path;
 	pipe(pipefd);
-	if (fork() == 0)
+	pid = fork();
+	if (pid == 0)
 	{
 		fd_dup[0] = dup2 (pipefd[1], STDOUT_FILENO);
 		close(pipefd[0]);
@@ -99,30 +122,40 @@ void	run_cmds(int argc, char **argv, t_cmd *cmd_list)
 		fd_in = open(argv[1], O_RDONLY);
 		fd_dup[1] = dup2 (fd_in, STDIN_FILENO);
 		close(fd_in);
-		execve((const char *) path_cmd, cmd_list->cmd_split, NULL);
+		//printf("wasLos:%s\n", path_cmd);
+	//if (path_cmd != NULL)
+		if (execve((const char *) path_cmd, cmd_list->cmd_split, envp) == -1)
+			pipex_error("execve child error", 1, errno);
 	}
 	else
 	{
-		wait(NULL);
+		//wait(NULL);
+		
+		waitpid(pid, &stat_loc, WNOHANG);
+		//exit(0);
+		//printf("stat_log:%i\n", stat_loc);
+		//exit(0);
 		//close(fd_dup[0]);
 		//close(fd_dup[1]);
-		free(path_cmd);
 		fd_dup[0] = dup2 (pipefd[0], STDIN_FILENO);
 		close(pipefd[0]);
 		close(pipefd[1]);
-		fd_out = open(argv[argc - 1], O_CREAT | O_RDWR, 0644 );
+		fd_out = open(argv[argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0644 );
+		if (fd_out == -1)
+			pipex_error("Could not open file", 1, errno);
 		fd_dup[1] = dup2 (fd_out, STDOUT_FILENO);
 		close(fd_out);
-		execve((const char *) cmd_list->next->cmd_path, cmd_list->next->cmd_split, NULL);
+		if (execve((const char *) cmd_list->next->cmd_path, cmd_list->next->cmd_split, envp) == -1)
+			pipex_error("execve parent error", 1, errno);
 	}
 }	
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
 	t_cmd	*cmd_list;
 
-	cmd_list = init_cmds(argc, argv);
-	run_cmds(argc, argv, cmd_list);
+	cmd_list = init_cmds(argc, argv, envp);
+	run_cmds(argc, argv, envp, cmd_list);
 	//pipex_lstclear(cmd_list);
 	//printf("ERROR:%s | %s\n", cmd_list->cmd_str, cmd_list->next->cmd_split[0]);
 	//exit(0);

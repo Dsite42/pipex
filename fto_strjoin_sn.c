@@ -20,7 +20,7 @@ char	*ft_strjoin_sn(int size, char **strs, char *sep)
 	int		len_join;
 	int		i;
 
-printf("test:%s\n", strs[0]);
+//printf("test:%s\n", strs[0]);
 	i = 0;
 	len_join = 0;
 	while (i < size && strs[i] != NULL)

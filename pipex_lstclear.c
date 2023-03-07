@@ -26,6 +26,8 @@ void	pipex_lstclear(t_cmd *lst)
 		tmp = lst->next;
 		if (lst->program_name != NULL)
 			free(lst->program_name);
+		if (lst->path_split != NULL)
+			fto_free_arr((void **)lst->path_split);
 		if (lst->cmd_str != NULL)
 			free(lst->cmd_str);
 		if (lst->cmd_path != NULL)
