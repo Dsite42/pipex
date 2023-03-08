@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chris <chris@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 15:21:13 by chris             #+#    #+#             */
-/*   Updated: 2023/03/01 19:42:56 by chris            ###   ########.fr       */
+/*   Updated: 2023/03/08 14:45:38 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ char	*get_path_cmd(t_cmd *cmd_list, char **envp)
 
 	i = 0;
 	path_cmd = NULL;
+	if (access((cmd_list->cmd_split)[0], F_OK) == 0)
+		return ((cmd_list->cmd_split)[0]);
 	to_join[1] = (cmd_list->cmd_split)[0];
 	split_path(cmd_list, envp);
 	while ((cmd_list->path_split)[i] != NULL)
@@ -155,7 +157,12 @@ int	main(int argc, char **argv, char **envp)
 	t_cmd	*cmd_list;
 
 	cmd_list = init_cmds(argc, argv, envp);
-	run_cmds(argc, argv, envp, cmd_list);
+	while(*envp)
+	{
+		printf("::%s\n", *envp);
+		envp++;
+	}
+	//run_cmds(argc, argv, envp, cmd_list);
 	//pipex_lstclear(cmd_list);
 	//printf("ERROR:%s | %s\n", cmd_list->cmd_str, cmd_list->next->cmd_split[0]);
 	//exit(0);
