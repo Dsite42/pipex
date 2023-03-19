@@ -32,5 +32,6 @@ t_cmd	*pipex_lstnew(char *content);
 t_cmd	*pipex_lstlast(t_cmd *lst);
 void	pipex_lstadd_back(t_cmd **lst, t_cmd *new);
 void	pipex_lstclear(t_cmd *lst);
+char	**awk_split(char const *s, char c);
 
 #endif
