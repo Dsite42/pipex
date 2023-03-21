@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 15:21:13 by chris             #+#    #+#             */
-/*   Updated: 2023/03/19 15:10:14 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/03/21 18:09:02 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,15 @@ void	pipex_error(int shall_exit, char *message, int isperror, int exit_code)
 
 void	split_path(t_cmd *cmd_list, char **envp)
 {
+	char environment_string[] = "PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin";
+
+	if (*envp == NULL)
+		cmd_list->path_split = ft_split(environment_string, ':');
 	while (*envp != NULL)
 	{
 		if (ft_strncmp(*envp, "PATH=", 5) == 0)
 		{
-			cmd_list->path_split = ft_split(*envp, ':');
+			cmd_list->path_split = ft_split(*envp + 5, ':');
 			break ;
 		}
 		envp = envp + 1;
@@ -58,6 +62,7 @@ char	*get_path_cmd(t_cmd *cmd_list, char **envp)
 	char	*error_message;
 
 	i = 0;
+
 	path_cmd = NULL;
 	if (access((cmd_list->cmd_split)[0], F_OK) == 0)
 		return ((cmd_list->cmd_split)[0]);
@@ -156,13 +161,13 @@ void	run_cmds(int argc, char **argv, char **envp, t_cmd *cmd_list)
 		close(pipefd[1]);
 		fd_out = open(argv[argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0644 );
 		if (fd_out == -1)
-			pipex_error(0, "Could not open file", 1, errno);
+			pipex_error(1, "Could not open file", 1, errno);
 		fd_dup[1] = dup2 (fd_out, STDOUT_FILENO);
 		close(fd_out);
 		if (cmd_list->next->cmd_path != NULL)
 		{
 			if (execve((const char *) cmd_list->next->cmd_path, cmd_list->next->cmd_split, envp) == -1)
-				pipex_error(0, "execve parent error", 1, errno);
+				pipex_error(1, "execve parent error", 1, errno);
 		}
 		else
 			exit(127);
@@ -175,14 +180,14 @@ int	main(int argc, char **argv, char **envp)
 
 	cmd_list = init_cmds(argc, argv, envp);
 
-	//while(*argv)
+	//while(*envp)
 	//{
-	//	printf("%s\n", *argv);
-	//	argv++;
+	//	printf("%s\n", *envp);
+	//	envp++;
 	//}
 
 	run_cmds(argc, argv, envp, cmd_list);
-	//pipex_lstclear(cmd_list);
+	pipex_lstclear(cmd_list);
 	//printf("ERROR:%s | %s\n", cmd_list->cmd_str, cmd_list->next->cmd_split[0]);
 	//exit(0);
 	return (0);
