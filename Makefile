@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chris <chris@student.42.fr>                +#+  +:+       +#+         #
+#    By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/18 15:39:27 by cgodecke          #+#    #+#              #
-#    Updated: 2023/03/01 15:24:34 by chris            ###   ########.fr        #
+#    Updated: 2023/03/22 15:24:00 by cgodecke         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 CC = cc
-#CC_FLAGS = -g -Wall -Wextra -Werror
+CC_FLAGS = -g #-Wall -Wextra -Werror
 OBJDIR = obj
 INFILES = 	*.c\
 			get_next_line/get_next_line_bonus.c\
@@ -31,8 +31,8 @@ NAME_BONUS = checker
 all: $(NAME)
 
 $(NAME):
-	cd libft && $(MAKE)
-	$(CC) $(CC_FLAGS) $(INFILES) -o $(NAME)  libft/libft.a
+	cd ft_fprintf && $(MAKE)
+	$(CC) $(CC_FLAGS) $(INFILES) -o $(NAME)  ft_fprintf/libftfprintf.a
 
 $(OBJDIR)/%.o: %.c
 	$(CC) $(CC_FLAGS) -c $< -o $@
@@ -48,12 +48,12 @@ setup:
 clean:
 	rm -f $(OBJFILES) $(BONUSOBJFILES)
 	rm -r -f obj/
-	cd libft && $(MAKE) clean
+	cd ft_fprintf && $(MAKE) clean
 
 fclean: clean
 	rm -f $(NAME)
 	rm -f $(NAME_BONUS)
-	cd libft && $(MAKE) fclean
+	cd ft_fprintf && $(MAKE) fclean
 	
 #bonus: all $(BONUSOBJFILES)
 #	$(CC) $(CC_FLAGS) $(BONUSOBJFILES) -o $(NAME_BONUS)  libft/libft.a
