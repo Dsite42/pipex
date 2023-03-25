@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 13:15:24 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/03/22 15:08:37 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/03/25 19:03:59 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*get_path_cmd(t_cmd *cmd_list, char **envp)
 
 	path_cmd = NULL;
 	if (access((cmd_list->cmd_split)[0], F_OK) == 0)
-		return ((cmd_list->cmd_split)[0]);
+		return (ft_strdup((cmd_list->cmd_split)[0]));
 	to_join[1] = (cmd_list->cmd_split)[0];
 	split_path(cmd_list, envp);
 	search_accessable_path(cmd_list, to_join, &path_cmd);

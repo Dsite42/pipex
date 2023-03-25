@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:37:36 by chris             #+#    #+#             */
-/*   Updated: 2023/03/19 11:35:59 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/03/25 19:02:58 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,14 @@ void	pipex_lstclear(t_cmd *lst)
 			free(lst->program_name);
 		if (lst->path_split != NULL)
 			fto_free_arr((void **)lst->path_split);
+		if (lst->path_split != NULL)
+			free(lst->path_split);
 		if (lst->cmd_str != NULL)
 			free(lst->cmd_str);
 		if (lst->cmd_path != NULL)
 			free(lst->cmd_path);
-		fto_free_arr((void **)lst->cmd_split);
+		if (lst->cmd_split != NULL)
+			fto_free_arr((void **)lst->cmd_split);
 		if (lst->cmd_split != NULL)
 			free(lst->cmd_split);
 		free(lst);

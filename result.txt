@@ -1,1 +1,21 @@
-2 hier bin ich
+Makefile
+awk_split.c
+deepthought.txt
+env_varr
+ft_fprintf
+fto_free_arr.c
+fto_strjoin_sn.c
+get_next_line
+init_cmds.c
+main.c
+pipex
+pipex.dSYM
+pipex.h
+pipex_error.c
+pipex_lstadd_back.c
+pipex_lstclear.c
+pipex_lstlast.c
+pipex_lstnew.c
+result.txt
+test.txt
+valgrind-out.txt

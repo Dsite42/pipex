@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   psw_lstnew.c                                       :+:      :+:    :+:   */
+/*   pipex_lstnew.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 22:58:36 by chris             #+#    #+#             */
-/*   Updated: 2023/02/23 13:03:16 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/03/25 18:45:30 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ t_cmd	*pipex_lstnew(char *content)
 	if (tmp == NULL)
 		return (NULL);
 	tmp->program_name = NULL;
-	tmp->cmd_str = content;
+	tmp->path_split = NULL;
+	tmp->cmd_str = ft_strdup(content);
 	tmp->cmd_split = NULL;
 	tmp->cmd_path = NULL;
 	tmp->next = NULL;

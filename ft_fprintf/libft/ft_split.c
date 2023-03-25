@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chris <chris@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 13:04:51 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/01/07 13:34:00 by chris            ###   ########.fr       */
+/*   Updated: 2023/03/25 18:54:58 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 // NULL if the allocation fails.
 
 #include "libft.h"
+#include <stdio.h> // dg
 
 static unsigned int	str_count(char const *str, char c)
 {
@@ -78,8 +79,9 @@ char	**ft_split(char const *s, char c)
 	while (i < arr_size - 1)
 	{
 		arr_split[i] = ft_substr((char const *) cs, 0, betweenlen(cs, c));
-		cs = cs + betweenlen(cs, c) + 1
-			+ sea_start(cs + betweenlen(cs, c) + 1, c);
+		if (i < arr_size - 2)
+			cs = cs + betweenlen(cs, c) + 1
+				+ sea_start(cs + betweenlen(cs, c) + 1, c);
 		i++;
 	}
 	arr_split[i] = NULL;
