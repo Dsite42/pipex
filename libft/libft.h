@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:13:18 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/03/27 18:30:55 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/03/28 14:45:50 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <stdlib.h>
 # include <stddef.h>
 # include <unistd.h>
+# include "ft_printf/ft_printf.h"
+# include "ft_printf/ft_printf_bonus.h"
 
 typedef struct s_list
 {
@@ -245,64 +247,4 @@ int		ft_tolower(int c);
 // No locale.
 // Return: 1 if yes 0 if not as int.
 int		ft_toupper(int c);
-#endif
-
-
-#ifndef GET_NEXT_LINE_BONUS_H
-# define GET_NEXT_LINE_BONUS_H
-
-# include <unistd.h>
-# include <stdlib.h>
-
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
-
-# ifndef MAX_FD
-#  define MAX_FD 65536
-# endif
-
-char	*get_next_line(int fd);
-char	*gnl_strdup(const char *s, char end);
-char	*gnl_strjoin(char *s1, char *s2);
-int		gnl_strlen(const char *s, char end);
-void	cpy_len(const char *src, char *dest, int len);
-int		line_counter(const char *str);
-char	*reduce_tmp(char *str, int start);
-int		read_new_line(char **tmp, int fd);
-int		fill_buffer(char **buf, int fd);
-
-#endif
-
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
-
-# include <stdarg.h>
-
-// This function ft_putnbr_base prints a number by converting it to an other 
-// base system.
-// Return: None.
-void	ft_putnbr_base(long double nb, char *base, size_t *cnt_out);
-
-// This function ft_put_single prints one char and increasing a print counter.
-// Return: None.
-void	ft_put_single(const char c, size_t *cnt_out);
-
-// This function ft_put_str prints a string and increasing a print counter by
-// the amount of printed chars.
-// Return: None.
-void	ft_put_str(const char *str, size_t *cnt_out);
-
-// This function ft_printf prints out the input arguments.
-// Return: Return the amout if printed chars as int.
-int		ft_printf(const char *fmt, ...);
-#endif
-
-#ifndef FT_PRINTF_BONUS_H
-# define FT_PRINTF_BONUS_H
-
-// This function ft_print_flags prints a string or char depending on the input
-// flags and increasing a print counter by the amount of printed chars.
-// Return: None.
-void	ft_print_flags(int dest_val, char *flags, char conv, size_t *cnt_out);
 #endif

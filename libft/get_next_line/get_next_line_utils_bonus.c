@@ -6,11 +6,11 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:01:03 by chris             #+#    #+#             */
-/*   Updated: 2023/03/27 18:25:24 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/03/28 14:48:41 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "get_next_line_bonus.h"
 
 int	gnl_strlen(const char *s, char end)
 {
