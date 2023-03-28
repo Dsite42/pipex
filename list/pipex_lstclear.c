@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:37:36 by chris             #+#    #+#             */
-/*   Updated: 2023/03/25 19:02:58 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/03/28 12:40:06 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // pointer to the list must be set to NULL.
 // Return: None.
 
-#include "pipex.h"
+#include "../pipex.h"
 
 void	pipex_lstclear(t_cmd *lst)
 {
@@ -27,17 +27,13 @@ void	pipex_lstclear(t_cmd *lst)
 		if (lst->program_name != NULL)
 			free(lst->program_name);
 		if (lst->path_split != NULL)
-			fto_free_arr((void **)lst->path_split);
-		if (lst->path_split != NULL)
-			free(lst->path_split);
+			of_free_arr((void **)lst->path_split);
 		if (lst->cmd_str != NULL)
 			free(lst->cmd_str);
 		if (lst->cmd_path != NULL)
 			free(lst->cmd_path);
 		if (lst->cmd_split != NULL)
-			fto_free_arr((void **)lst->cmd_split);
-		if (lst->cmd_split != NULL)
-			free(lst->cmd_split);
+			of_free_arr((void **)lst->cmd_split);
 		free(lst);
 		lst = tmp;
 	}

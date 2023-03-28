@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 13:04:51 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/03/25 18:54:58 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/03/25 17:26:44 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 // NULL if the allocation fails.
 
 #include "libft.h"
-#include <stdio.h> // dg
 
 static unsigned int	str_count(char const *str, char c)
 {

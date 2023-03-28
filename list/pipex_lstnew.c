@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 22:58:36 by chris             #+#    #+#             */
-/*   Updated: 2023/03/25 18:45:30 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/03/28 11:40:35 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // The variable ’next’ is initialized to NULL.
 // Return: The new node as t_list.
 
-#include "pipex.h"
+#include "../pipex.h"
 
 t_cmd	*pipex_lstnew(char *content)
 {

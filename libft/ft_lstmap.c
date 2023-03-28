@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chris <chris@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:37:36 by chris             #+#    #+#             */
-/*   Updated: 2023/01/07 13:23:29 by chris            ###   ########.fr       */
+/*   Updated: 2023/02/03 18:54:18 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 		newnode = ft_lstnew(fres);
 		if (newnode == NULL)
 		{
-			ft_lstclear(&newlst, del);
+			del(lst);
+			ft_lstclear(&lst, del);
 			return (NULL);
 		}
 		if (newlst == NULL)

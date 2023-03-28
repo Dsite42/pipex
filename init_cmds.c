@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 13:15:24 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/03/25 19:03:59 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/03/28 11:52:06 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	search_accessable_path(t_cmd *cmd_list, char **to_join, char **path_cmd)
 	while ((cmd_list->path_split)[i] != NULL)
 	{
 		to_join[0] = (cmd_list->path_split)[i];
-		*path_cmd = ft_strjoin_sn(2, to_join, "/");
+		*path_cmd = of_nstrjoin(2, to_join, "/");
 		if (access(*path_cmd, F_OK) == 0)
 			break ;
 		else

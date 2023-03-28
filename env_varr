@@ -1,5 +1,0 @@
-#!/bin/bash
-
-echo $PATH
-echo $VAR1
-echo $VAR2

@@ -6,21 +6,16 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 15:09:27 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/03/25 19:06:14 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/03/28 12:48:35 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include "ft_fprintf/ft_fprintf.h"
-# include <unistd.h>
+# include "libft/libft.h"
 # include <sys/wait.h>
-# include <stdio.h>
-# include <stdlib.h>
 # include <fcntl.h>
-# include <string.h>
-# include "get_next_line/get_next_line_bonus.h"
 # include <errno.h>
 
 typedef struct s_cmd_list
@@ -34,8 +29,9 @@ typedef struct s_cmd_list
 	struct s_cmd_list	*next;
 }	t_cmd;
 
-char	*ft_strjoin_sn(int size, char **strs, char *sep);
-void	fto_free_arr(void **arr);
+int		of_fd_printf(int fd, const char *fmt, ...);
+char	*of_nstrjoin(int size, char **strs, char *sep);
+void	of_free_arr(void **arr);
 t_cmd	*pipex_lstnew(char *content);
 t_cmd	*pipex_lstlast(t_cmd *lst);
 void	pipex_lstadd_back(t_cmd **lst, t_cmd *new);
