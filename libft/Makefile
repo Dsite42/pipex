@@ -6,7 +6,7 @@
 #    By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/18 15:39:27 by cgodecke          #+#    #+#              #
-#    Updated: 2023/04/05 11:32:12 by cgodecke         ###   ########.fr        #
+#    Updated: 2023/04/05 13:04:08 by cgodecke         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,7 +83,6 @@ NAME = libft.a
 all: setup $(NAME)
 
 $(NAME): $(OBJFILES) $(BONUSOBJFILES) $(get_next_line_OBJ) $(ft_printf_OBJ)
-#$(CC) -c $(CC_FLAGS) $(OBJFILES) $(Get_Next_Line_OBJ)
 	$(AR)  $(AR_FLAGS) $(NAME) $(OBJFILES) $(BONUSOBJFILES) $(get_next_line_OBJ) $(ft_printf_OBJ)
 
 $(OBJDIR)/%.o: %.c

@@ -6,14 +6,9 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 13:04:51 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/03/22 15:18:04 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:05:51 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// This function ft_split creates a new array of strings that have been split
-// from a string seperated by a char. The array ends with a NULL pointer.
-// Return: Pointer to the new array of new strings resulting from the split.
-// NULL if the allocation fails.
 
 #include "pipex.h"
 
