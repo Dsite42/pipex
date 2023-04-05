@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 13:15:24 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/03/28 11:52:06 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/04/05 18:59:44 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ t_cmd	*init_cmds(int argc, char **argv, char **envp)
 
 	i = 2;
 	cmd_list = NULL;
-	if (argc < 5)
-		pipex_error(1, "Not enough input arguments", 0, 5);
+	if (argc != 5)
+		pipex_error(1, "Invalid amount of input arguments", 0, 5);
 	while (i <= argc - 2)
 	{
 		new_node = pipex_lstnew(*(argv + i));
