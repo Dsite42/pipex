@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 15:21:13 by chris             #+#    #+#             */
-/*   Updated: 2023/03/25 19:05:44 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/04/05 11:28:55 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,16 @@ void	child(t_cmd *cmd_list, char **argv, char **envp, int *pipefd)
 	int	fd_in;
 
 	fd_dup[0] = dup2 (pipefd[1], STDOUT_FILENO);
+	if (fd_dup[0] == -1)
+		pipex_error(1, "dup2 error", 1, errno);
 	close(pipefd[0]);
 	close(pipefd[1]);
 	fd_in = open(argv[1], O_RDONLY);
 	if (fd_in == -1)
 		pipex_error(1, "input:", 1, errno);
 	fd_dup[1] = dup2 (fd_in, STDIN_FILENO);
+	if (fd_dup[1] == -1)
+		pipex_error(1, "dup2 error", 1, errno);
 	close(fd_in);
 	if (cmd_list->cmd_path != NULL)
 	{
@@ -39,12 +43,16 @@ void	parent(t_cmd *cmd_list, char **argv, char **envp, int *pipefd)
 	int	fd_out;
 
 	fd_dup[0] = dup2 (pipefd[0], STDIN_FILENO);
+	if (fd_dup[0] == -1)
+		pipex_error(1, "dup2 error", 1, errno);
 	close(pipefd[0]);
 	close(pipefd[1]);
 	fd_out = open(argv[cmd_list->argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd_out == -1)
 		pipex_error(1, "Could not open file", 1, errno);
 	fd_dup[1] = dup2 (fd_out, STDOUT_FILENO);
+	if (fd_dup[1] == -1)
+		pipex_error(1, "dup2 error", 1, errno);
 	close(fd_out);
 	if (cmd_list->next->cmd_path != NULL)
 	{

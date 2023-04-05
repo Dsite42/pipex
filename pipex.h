@@ -6,7 +6,7 @@
 /*   By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 15:09:27 by cgodecke          #+#    #+#             */
-/*   Updated: 2023/03/28 12:48:35 by cgodecke         ###   ########.fr       */
+/*   Updated: 2023/04/05 10:56:31 by cgodecke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <string.h>
 
 typedef struct s_cmd_list
 {
@@ -29,15 +30,20 @@ typedef struct s_cmd_list
 	struct s_cmd_list	*next;
 }	t_cmd;
 
-int		of_fd_printf(int fd, const char *fmt, ...);
-char	*of_nstrjoin(int size, char **strs, char *sep);
-void	of_free_arr(void **arr);
-t_cmd	*pipex_lstnew(char *content);
-t_cmd	*pipex_lstlast(t_cmd *lst);
-void	pipex_lstadd_back(t_cmd **lst, t_cmd *new);
-void	pipex_lstclear(t_cmd *lst);
 char	**awk_split(char const *s, char c);
 t_cmd	*init_cmds(int argc, char **argv, char **envp);
 void	pipex_error(int shall_exit, char *message,
 			int isstrerror, int exit_code);
+
+//list
+t_cmd	*pipex_lstnew(char *content);
+t_cmd	*pipex_lstlast(t_cmd *lst);
+void	pipex_lstadd_back(t_cmd **lst, t_cmd *new);
+void	pipex_lstclear(t_cmd *lst);
+
+//of
+int		of_fd_printf(int fd, const char *fmt, ...);
+char	*of_nstrjoin(int size, char **strs, char *sep);
+void	of_free_arr(void **arr);
+
 #endif

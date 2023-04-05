@@ -6,13 +6,13 @@
 #    By: cgodecke <cgodecke@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/18 15:39:27 by cgodecke          #+#    #+#              #
-#    Updated: 2023/03/28 13:11:01 by cgodecke         ###   ########.fr        #
+#    Updated: 2023/04/05 11:34:13 by cgodecke         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 CC = cc
-CC_FLAGS = -g -Wall -Wextra -Werror
+CC_FLAGS = -Wall -Wextra -Werror
 OBJDIR = obj
 INFILES = 	list/pipex_lstadd_back.c\
 			list/pipex_lstclear.c\
@@ -28,12 +28,7 @@ INFILES = 	list/pipex_lstadd_back.c\
 			
 OBJFILES = $(INFILES:%.c=$(OBJDIR)/%.o)
 
-BONUSFILES = 	helper/calc_single_index.c\
-				
-BONUSOBJFILES = $(BONUSFILES:%.c=$(OBJDIR)/%.o)
-
 NAME = pipex
-NAME_BONUS = checker
 
 all: setup $(NAME)
 
@@ -59,9 +54,6 @@ fclean: clean
 	rm -f $(NAME_BONUS)
 	cd libft && $(MAKE) fclean
 	
-#bonus: all $(BONUSOBJFILES)
-#	$(CC) $(CC_FLAGS) $(BONUSOBJFILES) -o $(NAME_BONUS)  libft/libft.a
-
 re: fclean all
 
-.PHONY: all clean fclean bonus re
+.PHONY: all clean fclean re
